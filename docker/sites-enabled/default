@@ -1,14 +1,16 @@
-#redirect all http traffic to https
-
-
-
 server{
 
-    location /healthcheck {
+    #example of a uri we don't want to pass through
+    location /denied {
       return 404;
     }
 
+    #old-page should be redirected to new-page
+    location /old-page {
+      return 301 http://$host/new-page;
+    }
 
+    #all other uris we should pass through to the application-host
     location / {
         proxy_pass              http://application-host:3000;
     }
